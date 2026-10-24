@@ -3,509 +3,1114 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rang Trails - A Minimalist Zen Puzzle Journey</title>
+  <title>Rang Trails - Official Zen Path Puzzle Game</title>
   <meta name="description" content="Draw glowing continuous paths to fill every cell. 100+ handcrafted levels, daily challenges, and relaxing zen aesthetics on Google Play.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --bg-primary: #f8fafc;
-      --bg-secondary: #f1f5f9;
-      --surface: rgba(255, 255, 255, 0.85);
-      --surface-border: rgba(226, 232, 240, 0.8);
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --accent-coral: #ff6b6b;
-      --accent-cyan: #00d2d3;
-      --accent-gold: #feca57;
-      --accent-purple: #845ec2;
-      --glow-coral: rgba(255, 107, 107, 0.35);
-      --glow-cyan: rgba(0, 210, 211, 0.35);
-      --shadow-soft: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
-      --shadow-hover: 0 20px 40px -10px rgba(0, 210, 211, 0.2);
+      --bg-cream: #F5F0E8;
+      --bg-warm-card: #FFFFFF;
+      --text-dark: #1A1A2E;
+      --text-muted: #6B7280;
+      --cell-empty: #E3DDD2;
+      --cell-border: #D6CEBF;
+      
+      /* Active Skin Colors (Dynamic) */
+      --trail-primary: #FF6B35;
+      --trail-glow: rgba(255, 107, 53, 0.45);
+      --trail-gradient: linear-gradient(135deg, #FF6B35, #FFA26B);
+      --accent-gold: #E8A838;
+      
+      --shadow-zen: 0 12px 36px -8px rgba(26, 26, 46, 0.08), 0 4px 12px -2px rgba(26, 26, 46, 0.04);
+      --shadow-glow: 0 16px 40px -10px var(--trail-glow);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: radial-gradient(circle at 10% 20%, rgba(254, 202, 87, 0.12) 0%, transparent 40%),
-                  radial-gradient(circle at 90% 80%, rgba(0, 210, 211, 0.12) 0%, transparent 45%),
-                  radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
-                  var(--bg-primary);
-      color: var(--text-main);
+      background-color: var(--bg-cream);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(232, 168, 56, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 85% 25%, var(--trail-glow) 0%, transparent 40%),
+        radial-gradient(circle at 50% 85%, rgba(0, 207, 255, 0.12) 0%, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-dark);
       min-height: 100vh;
-      overflow-x: hidden;
       line-height: 1.6;
+      overflow-x: hidden;
+      transition: background 0.4s ease;
     }
 
-    /* Header Nav */
+    /* Top Navigation */
     header {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px;
-      max-width: 1200px;
-      margin: 0 auto;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       text-decoration: none;
     }
 
-    .brand-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent-coral), var(--accent-cyan));
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1A1A2E 0%, #2A2A44 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 15px var(--glow-coral);
-      color: white;
-      font-weight: 800;
-      font-size: 20px;
-      font-family: 'Outfit', sans-serif;
+      box-shadow: 0 6px 20px rgba(26, 26, 46, 0.18);
+      position: relative;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.8);
     }
 
-    .brand-name {
+    .brand-logo-glow {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--trail-primary);
+      filter: blur(8px);
+      opacity: 0.8;
+      transition: all 0.4s ease;
+    }
+
+    .brand-logo svg {
+      width: 26px;
+      height: 26px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text-main);
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-dark);
       letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+
+    .brand-tagline {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--trail-primary);
+      transition: color 0.4s ease;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
 
     nav a {
-      color: var(--text-muted);
+      color: var(--text-dark);
       text-decoration: none;
+      font-size: 14px;
       font-weight: 600;
-      font-size: 15px;
-      transition: color 0.2s ease;
-      margin-left: 24px;
+      transition: color 0.2s;
     }
 
     nav a:hover {
-      color: var(--accent-coral);
+      color: var(--trail-primary);
     }
 
-    /* Hero Section */
-    .hero {
-      max-width: 1100px;
-      margin: 40px auto 80px;
-      padding: 0 24px;
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 48px;
+    .nav-play-btn {
+      background: var(--text-dark);
+      color: #FFFFFF !important;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 14px rgba(26, 26, 46, 0.2);
+      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+
+    .nav-play-btn:hover {
+      transform: translateY(-2px);
+      background: #000;
+      box-shadow: 0 8px 20px rgba(26, 26, 46, 0.28);
+    }
+
+    /* Skin Switcher Banner */
+    .skin-bar {
+      max-width: 1200px;
+      margin: 0 auto 10px;
+      padding: 0 32px;
+      display: flex;
       align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    @media (max-width: 868px) {
-      .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-        margin: 20px auto 40px;
-      }
+    .skin-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
     }
 
-    .badge {
+    .skin-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(214, 206, 191, 0.8);
       border-radius: 999px;
-      background: rgba(0, 210, 211, 0.12);
-      border: 1px solid rgba(0, 210, 211, 0.3);
-      color: #008788;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.25s ease;
     }
 
-    .badge-dot {
-      width: 8px;
-      height: 8px;
+    .skin-pill:hover {
+      background: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
+    .skin-pill.active {
+      background: #FFFFFF;
+      border-color: var(--trail-primary);
+      box-shadow: 0 4px 12px var(--trail-glow);
+    }
+
+    .skin-dot {
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      background: var(--accent-cyan);
-      box-shadow: 0 0 8px var(--accent-cyan);
+    }
+
+    /* Hero Layout */
+    .hero {
+      max-width: 1200px;
+      margin: 20px auto 70px;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+      }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      background: #FFFFFF;
+      border: 1px solid #E3DDD2;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-dark);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      margin-bottom: 24px;
+    }
+
+    .pulse-star {
+      color: var(--accent-gold);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
     }
 
     h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: 54px;
-      font-weight: 800;
-      line-height: 1.15;
+      font-size: 58px;
+      font-weight: 900;
+      line-height: 1.08;
       letter-spacing: -1.5px;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #0f172a 30%, #475569 100%);
+      color: var(--text-dark);
+      margin-bottom: 22px;
+    }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 40px; }
+    }
+
+    .gradient-text {
+      background: var(--trail-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      display: inline-block;
+      transition: background 0.4s ease;
     }
 
-    @media (max-width: 600px) {
-      h1 { font-size: 38px; }
-    }
-
-    h1 span {
-      background: linear-gradient(135deg, var(--accent-coral), var(--accent-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-sub {
+    .hero-desc {
       font-size: 18px;
       color: var(--text-muted);
-      margin-bottom: 32px;
-      max-width: 500px;
+      max-width: 520px;
+      margin-bottom: 36px;
+      line-height: 1.65;
     }
 
-    @media (max-width: 868px) {
-      .hero-sub { margin: 0 auto 32px; }
+    @media (max-width: 960px) {
+      .hero-desc { margin: 0 auto 32px; }
     }
 
-    .cta-group {
+    .hero-actions {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
       flex-wrap: wrap;
     }
 
-    @media (max-width: 868px) {
-      .cta-group { justify-content: center; }
+    @media (max-width: 960px) {
+      .hero-actions { justify-content: center; }
     }
 
-    .playstore-btn {
+    .btn-googleplay {
       display: inline-flex;
       align-items: center;
       gap: 14px;
-      background: #000000;
-      color: #ffffff;
+      background: #111827;
+      color: #FFFFFF;
       padding: 14px 28px;
-      border-radius: 14px;
+      border-radius: 16px;
       text-decoration: none;
-      font-weight: 600;
-      font-size: 15px;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 25px rgba(17, 24, 39, 0.25);
     }
 
-    .playstore-btn:hover {
+    .btn-googleplay:hover {
       transform: translateY(-3px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 16px 36px rgba(17, 24, 39, 0.35);
+      background: #000000;
     }
 
-    .playstore-btn svg {
+    .btn-googleplay svg {
       width: 28px;
       height: 28px;
+      flex-shrink: 0;
     }
 
-    .playstore-btn .btn-text-small {
+    .btn-googleplay-text {
+      text-align: left;
+    }
+
+    .btn-googleplay-text small {
       display: block;
-      font-size: 11px;
-      font-weight: 400;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      opacity: 0.75;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      opacity: 0.8;
       line-height: 1;
     }
 
-    .playstore-btn .btn-text-big {
+    .btn-googleplay-text strong {
       display: block;
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 19px;
+      font-weight: 800;
       line-height: 1.2;
     }
 
-    /* Mockup Showcase */
-    .hero-card {
-      position: relative;
-      background: var(--surface);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--surface-border);
-      border-radius: 28px;
-      padding: 24px;
-      box-shadow: var(--shadow-soft);
+    .rating-box {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      transition: all 0.4s ease;
+      gap: 12px;
+      padding: 10px 18px;
+      background: #FFFFFF;
+      border-radius: 14px;
+      border: 1px solid #E3DDD2;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
 
-    .hero-card:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-4px);
+    .rating-stars {
+      color: #F59E0B;
+      font-size: 15px;
+      letter-spacing: 1px;
     }
 
-    .puzzle-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 52px);
-      grid-template-rows: repeat(4, 52px);
-      gap: 10px;
-      padding: 20px;
-      background: #f8fafc;
-      border-radius: 20px;
-      border: 1px solid #e2e8f0;
-      position: relative;
+    .rating-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.2;
     }
 
-    .cell {
-      background: #ffffff;
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
-      transition: all 0.3s ease;
-    }
-
-    .cell.trail {
-      background: linear-gradient(135deg, var(--accent-coral), #ff8787);
-      border-color: #ff6b6b;
-      box-shadow: 0 0 15px var(--glow-coral);
-    }
-
-    .cell.trail-cyan {
-      background: linear-gradient(135deg, var(--accent-cyan), #48dbfb);
-      border-color: #00d2d3;
-      box-shadow: 0 0 15px var(--glow-cyan);
-    }
-
-    .cell.goal {
-      background: #feca57;
-      border-color: #ff9f43;
-      box-shadow: 0 0 15px rgba(254, 202, 87, 0.5);
-    }
-
-    .hero-card-caption {
-      margin-top: 18px;
-      font-size: 14px;
-      font-weight: 600;
+    .rating-sub {
+      font-size: 11px;
+      font-weight: 500;
       color: var(--text-muted);
+    }
+
+    /* Phone Mockup Frame */
+    .phone-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone-frame {
+      width: 340px;
+      background: #FFFFFF;
+      border-radius: 44px;
+      padding: 14px;
+      box-shadow: 
+        0 24px 60px -15px rgba(26, 26, 46, 0.2),
+        0 0 0 1px rgba(214, 206, 191, 0.6),
+        0 0 35px var(--trail-glow);
+      position: relative;
+      transition: box-shadow 0.4s ease;
+    }
+
+    .phone-screen {
+      background: #F5F0E8;
+      border-radius: 34px;
+      overflow: hidden;
+      border: 1px solid #E3DDD2;
+      padding: 20px 18px;
+      position: relative;
+    }
+
+    /* In-game HUD Header */
+    .hud-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .hud-chip {
+      background: #FFFFFF;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-dark);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
       display: flex;
       align-items: center;
+      gap: 6px;
+    }
+
+    .hud-lives {
+      color: #E53935;
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+
+    .hud-actions {
+      display: flex;
       gap: 8px;
     }
 
-    /* Features Grid */
-    .features {
-      max-width: 1200px;
-      margin: 40px auto 80px;
-      padding: 0 24px;
+    .hud-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: #FFFFFF;
+      border: 1px solid #E3DDD2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
     }
 
-    .section-title {
+    /* Interactive Game Canvas Board */
+    .board-container {
+      background: #FFFFFF;
+      border-radius: 22px;
+      padding: 16px;
+      border: 1px solid #E3DDD2;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02);
       text-align: center;
-      margin-bottom: 50px;
     }
 
-    .section-title h2 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 36px;
+    .board-title {
+      font-size: 12px;
       font-weight: 800;
-      letter-spacing: -0.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .grid-cell {
+      aspect-ratio: 1;
+      background: var(--cell-empty);
+      border-radius: 12px;
+      border: 2px solid var(--cell-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-dark);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .grid-cell:hover {
+      background: #EBE5DB;
+    }
+
+    .grid-cell.active-trail {
+      background: var(--trail-gradient) !important;
+      border-color: var(--trail-primary) !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 16px var(--trail-glow) !important;
+      transform: scale(0.96);
+    }
+
+    .grid-cell.start-cell {
+      background: #4CAF50;
+      border-color: #388E3C;
+      color: #FFFFFF;
+      box-shadow: 0 0 12px rgba(76, 175, 80, 0.4);
+    }
+
+    .grid-cell.end-cell {
+      background: #FFFFFF;
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      box-shadow: 0 0 12px rgba(232, 168, 56, 0.4);
+    }
+
+    .board-helper {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--trail-primary);
+      min-height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: color 0.4s ease;
+    }
+
+    .board-reset-btn {
+      margin-top: 10px;
+      background: var(--cell-empty);
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .board-reset-btn:hover {
+      background: var(--text-dark);
+      color: #FFFFFF;
+    }
+
+    /* Worlds Showcase Section */
+    .worlds-section {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 32px;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-tag {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--trail-primary);
+      margin-bottom: 8px;
+      display: block;
+      transition: color 0.4s ease;
+    }
+
+    .section-head h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--text-dark);
       margin-bottom: 12px;
     }
 
-    .section-title p {
-      color: var(--text-muted);
+    .section-head p {
       font-size: 17px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
     }
 
-    .grid-features {
+    .worlds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .world-card {
+      background: #FFFFFF;
+      border: 1px solid #E3DDD2;
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: var(--shadow-zen);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .world-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -10px rgba(26, 26, 46, 0.12);
+      border-color: var(--trail-primary);
+    }
+
+    .world-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 18px;
+    }
+
+    .w1 { background: rgba(232, 168, 56, 0.15); }
+    .w2 { background: rgba(0, 172, 193, 0.15); }
+    .w3 { background: rgba(124, 77, 255, 0.15); }
+    .w4 { background: rgba(109, 76, 65, 0.15); }
+    .w5 { background: rgba(84, 110, 122, 0.15); }
+
+    .world-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--text-dark);
+    }
+
+    .world-levels {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--trail-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: block;
+      transition: color 0.4s ease;
+    }
+
+    .world-card p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Key Features Grid */
+    .features-section {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 32px;
+    }
+
+    .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 24px;
     }
 
-    .feature-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 20px;
-      padding: 32px 24px;
-      box-shadow: var(--shadow-soft);
+    .feature-box {
+      background: #FFFFFF;
+      border: 1px solid #E3DDD2;
+      border-radius: 24px;
+      padding: 32px 26px;
+      box-shadow: var(--shadow-zen);
       transition: all 0.3s ease;
     }
 
-    .feature-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.06);
-      border-color: rgba(0, 210, 211, 0.4);
+    .feature-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px -10px rgba(26, 26, 46, 0.1);
+      border-color: var(--trail-primary);
     }
 
-    .feature-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 20px;
+    .feature-icon-badge {
+      font-size: 32px;
+      margin-bottom: 18px;
+      display: inline-block;
     }
 
-    .icon-1 { background: rgba(255, 107, 107, 0.15); color: var(--accent-coral); }
-    .icon-2 { background: rgba(0, 210, 211, 0.15); color: #00a8a9; }
-    .icon-3 { background: rgba(254, 202, 87, 0.2); color: #e67e22; }
-    .icon-4 { background: rgba(132, 94, 194, 0.15); color: var(--accent-purple); }
-
-    .feature-card h3 {
+    .feature-box h3 {
       font-family: 'Outfit', sans-serif;
-      font-size: 20px;
-      font-weight: 700;
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--text-dark);
       margin-bottom: 10px;
     }
 
-    .feature-card p {
-      color: var(--text-muted);
+    .feature-box p {
       font-size: 14.5px;
+      color: var(--text-muted);
       line-height: 1.6;
+    }
+
+    /* Bottom CTA Card */
+    .cta-banner {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 32px;
+    }
+
+    .cta-card {
+      background: linear-gradient(135deg, #1A1A2E 0%, #2B2B48 100%);
+      border-radius: 32px;
+      padding: 60px 40px;
+      text-align: center;
+      color: #FFFFFF;
+      box-shadow: 0 24px 60px -15px rgba(26, 26, 46, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: var(--trail-glow);
+      filter: blur(80px);
+      transition: background 0.4s ease;
+    }
+
+    .cta-card h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-card p {
+      font-size: 17px;
+      opacity: 0.85;
+      max-width: 550px;
+      margin: 0 auto 36px;
+      position: relative;
+      z-index: 2;
     }
 
     /* Footer */
     footer {
-      border-top: 1px solid var(--surface-border);
-      padding: 40px 24px;
+      border-top: 1px solid #E3DDD2;
+      background: #FFFFFF;
+      padding: 44px 32px;
       text-align: center;
       color: var(--text-muted);
       font-size: 14px;
-      background: #ffffff;
     }
 
-    .footer-links {
+    .footer-nav {
       display: flex;
       justify-content: center;
-      gap: 24px;
-      margin-bottom: 16px;
+      gap: 28px;
+      margin-bottom: 18px;
       flex-wrap: wrap;
     }
 
-    .footer-links a {
-      color: var(--text-main);
+    .footer-nav a {
+      color: var(--text-dark);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
       transition: color 0.2s;
     }
 
-    .footer-links a:hover {
-      color: var(--accent-coral);
+    .footer-nav a:hover {
+      color: var(--trail-primary);
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
+  <!-- Header -->
   <header>
     <a href="#" class="brand">
-      <div class="brand-icon">R</div>
-      <span class="brand-name">Rang Trails</span>
+      <div class="brand-logo">
+        <div class="brand-logo-glow"></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="4 4 4 10 10 10"></polyline>
+          <path d="M4 10a8 8 0 1 1 2.34 5.66"></path>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">Rang Trails</span>
+        <span class="brand-tagline">Zen Puzzle Game</span>
+      </div>
     </a>
+
     <nav>
       <a href="privacy.html">Privacy Policy</a>
-      <a href="https://play.google.com/store/apps/details?id=com.llk.rangtrails" target="_blank" rel="noopener">Play Store</a>
+      <a href="app-ads.txt">app-ads.txt</a>
+      <a href="https://play.google.com/store/apps/details?id=com.llk.rangtrails" target="_blank" rel="noopener" class="nav-play-btn">
+        Install Free
+      </a>
     </nav>
   </header>
+
+  <!-- Interactive Trail Skin Switcher -->
+  <div class="skin-bar">
+    <span class="skin-label">🎨 Try Trail Skins:</span>
+    <div class="skin-pill active" onclick="switchSkin('sunset', '#FF6B35', 'rgba(255, 107, 53, 0.45)', 'linear-gradient(135deg, #FF6B35, #FFA26B)')">
+      <span class="skin-dot" style="background: #FF6B35;"></span> Sunset Coral
+    </div>
+    <div class="skin-pill" onclick="switchSkin('cyan', '#00CFFF', 'rgba(0, 207, 255, 0.45)', 'linear-gradient(135deg, #00CFFF, #70E1FF)')">
+      <span class="skin-dot" style="background: #00CFFF;"></span> Neon Cyan
+    </div>
+    <div class="skin-pill" onclick="switchSkin('emerald', '#39FF14', 'rgba(57, 255, 20, 0.45)', 'linear-gradient(135deg, #39FF14, #85FF6E)')">
+      <span class="skin-dot" style="background: #39FF14;"></span> Emerald Glow
+    </div>
+    <div class="skin-pill" onclick="switchSkin('gold', '#E8A838', 'rgba(232, 168, 56, 0.45)', 'linear-gradient(135deg, #E8A838, #FFD27D)')">
+      <span class="skin-dot" style="background: #E8A838;"></span> Golden Amber
+    </div>
+    <div class="skin-pill" onclick="switchSkin('galaxy', '#9B59B6', 'rgba(155, 89, 182, 0.45)', 'linear-gradient(135deg, #9B59B6, #D29BFF)')">
+      <span class="skin-dot" style="background: #9B59B6;"></span> Cosmic Violet
+    </div>
+  </div>
 
   <!-- Hero Section -->
   <section class="hero">
     <div>
-      <div class="badge">
-        <span class="badge-dot"></span> Official Production Release
+      <div class="hero-badge">
+        <span class="pulse-star">★</span> Official Google Play Release
       </div>
-      <h1>Draw Glowing Paths. <span>Relax Your Mind.</span></h1>
-      <p class="hero-sub">
-        A tranquil, satisfying zen puzzle adventure. Connect every single tile with a continuous radiant trail — no cell left behind, no path crossed twice.
+      <h1>
+        Connect the Cells.<br>
+        <span class="gradient-text">Ignite the Glow.</span>
+      </h1>
+      <p class="hero-desc">
+        A tranquil, satisfying puzzle experience designed to calm your thoughts. Draw one continuous radiant trail that fills every single tile — no cell left behind, no path crossed twice.
       </p>
-      <div class="cta-group">
-        <a href="https://play.google.com/store/apps/details?id=com.llk.rangtrails" target="_blank" rel="noopener" class="playstore-btn">
+
+      <div class="hero-actions">
+        <a href="https://play.google.com/store/apps/details?id=com.llk.rangtrails" target="_blank" rel="noopener" class="btn-googleplay">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M3.609 1.814L13.792 12 3.61 22.186a2.008 2.008 0 0 1-.61-1.424V3.238c0-.546.222-1.045.609-1.424zm11.603 11.603l2.062 2.062-11.45 6.467 9.388-8.529zm2.766-1.572l3.411 1.927c.974.55.974 1.448 0 1.998l-3.41 1.927-2.348-2.348 2.347-2.348v-.006zm-2.766-1.572L5.824 1.744l11.45 6.467-2.062 2.062z"/>
           </svg>
-          <div>
-            <span class="btn-text-small">GET IT ON</span>
-            <span class="btn-text-big">Google Play</span>
+          <div class="btn-googleplay-text">
+            <small>GET IT ON</small>
+            <strong>Google Play</strong>
           </div>
         </a>
+
+        <div class="rating-box">
+          <div class="rating-stars">★★★★★</div>
+          <div>
+            <div class="rating-text">100% Solvable</div>
+            <div class="rating-sub">5 Unique Worlds</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Visual Interactive Board Mockup -->
-    <div class="hero-card">
-      <div class="puzzle-grid">
-        <div class="cell trail"></div>
-        <div class="cell trail"></div>
-        <div class="cell trail"></div>
-        <div class="cell trail"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell trail-cyan"></div>
-        <div class="cell trail-cyan"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell trail-cyan"></div>
-        <div class="cell trail-cyan"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell goal"></div>
-      </div>
-      <div class="hero-card-caption">
-        ✨ 100% Solvable Handcrafted Grids
+    <!-- Interactive Phone Mockup with Playable Grid -->
+    <div class="phone-wrapper">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          
+          <!-- In-game HUD -->
+          <div class="hud-bar">
+            <div class="hud-chip">
+              <span>World 1</span>
+              <span style="opacity:0.4;">•</span>
+              <span>Level 08</span>
+            </div>
+            <div class="hud-lives">❤️❤️❤️</div>
+            <div class="hud-actions">
+              <div class="hud-btn" title="Hint">💡</div>
+              <div class="hud-btn" title="Undo">↩️</div>
+            </div>
+          </div>
+
+          <!-- Playable Grid Mockup -->
+          <div class="board-container">
+            <div class="board-title">
+              <span>✨ Drag across tiles to play!</span>
+            </div>
+            
+            <div class="game-grid" id="interactiveGrid">
+              <!-- 4x4 Grid Cells dynamically injected via JS -->
+            </div>
+
+            <div class="board-helper" id="boardHelper">
+              👆 Touch or drag cells 1 → 16 to solve!
+            </div>
+            
+            <button class="board-reset-btn" onclick="resetInteractiveGrid()">Reset Board</button>
+          </div>
+
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Features Grid -->
-  <section class="features">
-    <div class="section-title">
-      <h2>Why You'll Love Rang Trails</h2>
-      <p>Crafted with love for puzzle lovers and peace seekers alike.</p>
+  <!-- Worlds Showcase -->
+  <section class="worlds-section">
+    <div class="section-head">
+      <span class="section-tag">JOURNEY OF LIGHT</span>
+      <h2>5 Handcrafted Worlds</h2>
+      <p>From gentle morning dawns to mind-bending cosmic voids, each world brings new geometric layouts and aesthetic themes.</p>
     </div>
 
-    <div class="grid-features">
-      <div class="feature-card">
-        <div class="feature-icon icon-1">🌌</div>
-        <h3>100+ Handcrafted Levels</h3>
-        <p>Journey through 5 vibrant worlds from Genesis to Astral Infinity, with balanced difficulty pacing.</p>
+    <div class="worlds-grid">
+      <div class="world-card">
+        <div class="world-icon-wrap w1">🌾</div>
+        <span class="world-levels">Levels 1 – 20</span>
+        <h3>World 1: Genesis</h3>
+        <p>Learn the flow and feel the glow. Gentle introductory grids in warm cream and amber tones.</p>
       </div>
 
-      <div class="feature-card">
-        <div class="feature-icon icon-2">💡</div>
+      <div class="world-card">
+        <div class="world-icon-wrap w2">🌊</div>
+        <span class="world-levels">Levels 21 – 40</span>
+        <h3>World 2: Neon Flow</h3>
+        <p>Branching turns and tricky corners submerged in deep tranquil oceanic navy and teal hues.</p>
+      </div>
+
+      <div class="world-card">
+        <div class="world-icon-wrap w3">🌃</div>
+        <span class="world-levels">Levels 41 – 60</span>
+        <h3>World 3: Chromatic Void</h3>
+        <p>Obstacles and precision paths surrounded by electric neon purples and cosmic dark tones.</p>
+      </div>
+
+      <div class="world-card">
+        <div class="world-icon-wrap w4">🏛️</div>
+        <span class="world-levels">Levels 61 – 80</span>
+        <h3>World 4: Prism Realm</h3>
+        <p>Complex geometric shapes with multi-step logical pathing and serene stone gray backgrounds.</p>
+      </div>
+
+      <div class="world-card">
+        <div class="world-icon-wrap w5">✨</div>
+        <span class="world-levels">Levels 81 – 100</span>
+        <h3>World 5: Astral Infinity</h3>
+        <p>The ultimate test of path mastery in deep space infinity. Pure cognitive satisfaction.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Features -->
+  <section class="features-section">
+    <div class="section-head">
+      <span class="section-tag">BUILT FOR PEACE OF MIND</span>
+      <h2>Zen Game Mechanics</h2>
+      <p>No intrusive timers, no stress, no paywalls. Just you and the flow of light.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-box">
+        <span class="feature-icon-badge">💡</span>
         <h3>Smart Guided Hints</h3>
-        <p>Never feel lost. Enjoy sequential line-by-line glowing animations with directional arrows when needed.</p>
+        <p>Never get stranded. Enjoy sequential glowing wave animations with step numbers and directional arrows.</p>
       </div>
 
-      <div class="feature-card">
-        <div class="feature-icon icon-3">📅</div>
+      <div class="feature-box">
+        <span class="feature-icon-badge">📅</span>
         <h3>Daily Zen Challenges</h3>
-        <p>Start your day with a focused, dedicated 3-life challenge puzzle designed to keep your mind sharp.</p>
+        <p>A fresh handcrafted puzzle every day featuring a 3-life challenge mode to sharpen your focus.</p>
       </div>
 
-      <div class="feature-card">
-        <div class="feature-icon icon-4">✈️</div>
-        <h3>100% Offline Playable</h3>
-        <p>Enjoy the full zen experience on flights, commutes, or in nature without requiring an active internet connection.</p>
+      <div class="feature-box">
+        <span class="feature-icon-badge">🎵</span>
+        <h3>Ambient Soundscapes</h3>
+        <p>Gentle chimes, subtle tactile haptic vibrations, and calming background audio tailored for relaxation.</p>
       </div>
+
+      <div class="feature-box">
+        <span class="feature-icon-badge">✈️</span>
+        <h3>100% Offline Playable</h3>
+        <p>Enjoy the full uninterrupted puzzle journey on flights, metro commutes, or anywhere without Wi-Fi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-banner">
+    <div class="cta-card">
+      <h2>Ready to Find Your Flow?</h2>
+      <p>Join thousands of puzzle lovers and download Rang Trails on Google Play today!</p>
+      <a href="https://play.google.com/store/apps/details?id=com.llk.rangtrails" target="_blank" rel="noopener" class="btn-googleplay" style="display:inline-flex;">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3.609 1.814L13.792 12 3.61 22.186a2.008 2.008 0 0 1-.61-1.424V3.238c0-.546.222-1.045.609-1.424zm11.603 11.603l2.062 2.062-11.45 6.467 9.388-8.529zm2.766-1.572l3.411 1.927c.974.55.974 1.448 0 1.998l-3.41 1.927-2.348-2.348 2.347-2.348v-.006zm-2.766-1.572L5.824 1.744l11.45 6.467-2.062 2.062z"/>
+        </svg>
+        <div class="btn-googleplay-text">
+          <small>AVAILABLE NOW ON</small>
+          <strong>Google Play</strong>
+        </div>
+      </a>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <div class="footer-links">
+    <div class="footer-nav">
       <a href="privacy.html">Privacy Policy</a>
       <a href="app-ads.txt">app-ads.txt</a>
-      <a href="https://play.google.com/store/apps/details?id=com.llk.rangtrails" target="_blank" rel="noopener">Google Play</a>
+      <a href="https://play.google.com/store/apps/details?id=com.llk.rangtrails" target="_blank" rel="noopener">Play Store</a>
+      <a href="mailto:support@llkstudios.com">Contact Support</a>
     </div>
     <p>&copy; 2026 Rang Trails (LLK Studios). All rights reserved.</p>
   </footer>
+
+  <!-- Interactive Grid & Theme Logic -->
+  <script>
+    // Live Trail Skin Switcher
+    function switchSkin(name, color, glow, gradient) {
+      document.documentElement.style.setProperty('--trail-primary', color);
+      document.documentElement.style.setProperty('--trail-glow', glow);
+      document.documentElement.style.setProperty('--trail-gradient', gradient);
+
+      document.querySelectorAll('.skin-pill').forEach(pill => pill.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+    }
+
+    // Interactive 4x4 Mini-Puzzle
+    const gridEl = document.getElementById('interactiveGrid');
+    const helperEl = document.getElementById('boardHelper');
+    const TOTAL_CELLS = 16;
+    let visited = [];
+    let isDragging = false;
+
+    // Standard snake solution path: 0,1,2,3 -> 7,6,5,4 -> 8,9,10,11 -> 15,14,13,12
+    const solvedSequence = [0, 1, 2, 3, 7, 6, 5, 4, 8, 9, 10, 11, 15, 14, 13, 12];
+
+    function createGrid() {
+      gridEl.innerHTML = '';
+      for (let i = 0; i < TOTAL_CELLS; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'grid-cell';
+        cell.dataset.index = i;
+        
+        if (i === 0) {
+          cell.classList.add('start-cell');
+          cell.innerText = 'Start';
+        } else if (i === 12) {
+          cell.classList.add('end-cell');
+          cell.innerText = 'Goal';
+        }
+
+        cell.addEventListener('pointerdown', (e) => startDraw(i, e));
+        cell.addEventListener('pointerenter', () => moveDraw(i));
+        gridEl.appendChild(cell);
+      }
+    }
+
+    window.addEventListener('pointerup', () => {
+      isDragging = false;
+    });
+
+    function startDraw(index, e) {
+      isDragging = true;
+      e.preventDefault();
+      visited = [index];
+      renderPath();
+    }
+
+    function moveDraw(index) {
+      if (!isDragging) return;
+      if (!visited.includes(index)) {
+        visited.push(index);
+        renderPath();
+
+        if (visited.length === TOTAL_CELLS) {
+          helperEl.innerHTML = '🎉 WOW! Trail Solved! Satisfying Zen!';
+          helperEl.style.color = '#10B981';
+        } else {
+          helperEl.innerText = `Drawing trail... (${visited.length}/${TOTAL_CELLS} cells covered)`;
+        }
+      }
+    }
+
+    function renderPath() {
+      const cells = document.querySelectorAll('.grid-cell');
+      cells.forEach((cell, idx) => {
+        if (visited.includes(idx)) {
+          cell.classList.add('active-trail');
+          const stepNum = visited.indexOf(idx) + 1;
+          cell.innerText = stepNum;
+        } else {
+          cell.classList.remove('active-trail');
+          if (idx === 0) cell.innerText = 'Start';
+          else if (idx === 12) cell.innerText = 'Goal';
+          else cell.innerText = '';
+        }
+      });
+    }
+
+    function resetInteractiveGrid() {
+      visited = [];
+      helperEl.innerHTML = '👆 Touch or drag cells 1 → 16 to solve!';
+      helperEl.style.color = 'var(--trail-primary)';
+      renderPath();
+    }
+
+    // Initialize board
+    createGrid();
+  </script>
 
 </body>
 </html>
